@@ -1,52 +1,23 @@
-#undef ___cat
+#undef cat
+
 #undef mangle
 
-// base
+#undef copy
+#undef drop
 
 #undef list
 
-#undef lst
+#undef with_capacity
+#undef reserve
 
-#undef res
-#undef fit
-#undef end
+#undef add_give
+#undef add_copy
 
-#undef clr
-#undef fil
-
-#undef add
 #undef pop
+#undef pop_take
 
-#undef get
-#undef set
+#undef insert_give
+#undef insert_copy
 
-#undef ins
-#undef rem
-
-#undef ext
-#undef cat
-#undef cpy
-
-// extra
-
-#undef empty
-
-#undef equal
-
-#undef each
-
-#undef foldl
-#undef foldr
-
-#undef map
-
-#undef any
-#undef keep
-#undef filter
-
-#undef predicate
-#undef compare
-#undef endo
-#undef operator
-
-#undef using
+#undef remove
+#undef remove_take

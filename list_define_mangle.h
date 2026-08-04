@@ -1,58 +1,23 @@
-#define ___cat(prefix, suffix) prefix ## suffix
+#define cat(a, b) a ## b
 
-#define mangle(prefix, suffix) ___cat(prefix, suffix)
+#define mangle(a, b) cat(a, b)
 
-// base
+#define copy mangle(copy_, using)
+#define drop mangle(drop_, using)
 
 #define list mangle(list_, using)
 
-#define lst mangle(lst_, using)
+#define with_capacity mangle(list, _with_capacity)
+#define reserve mangle(list, _reserve)
 
-#define res mangle(res_, lst)
-#define fit mangle(fit_, lst)
-#define end mangle(end_, lst)
+#define add_give mangle(list, _add_give)
+#define add_copy mangle(list, _add_copy)
 
-#define clr mangle(lst, _clr)
-#define fil mangle(lst, _fil)
+#define pop mangle(list, _pop)
+#define pop_take mangle(list, _pop_take)
 
-#define add mangle(lst_add_, using)
-#define pop mangle(lst_pop_, using)
+#define insert_give mangle(list, _insert_give)
+#define insert_copy mangle(list, _insert_copy)
 
-#define get mangle(lst_get_, using)
-#define set mangle(lst_set_, using)
-
-#define ins mangle(lst_ins_, using)
-#define rem mangle(lst_rem_, using)
-
-#define ext mangle(ext_, lst)
-#define cat mangle(cat_, lst)
-#define cpy mangle(cpy_, lst)
-
-// extra
-
-#define empty mangle(lst, _empty)
-
-#define equal mangle(lst, _equal)
-
-#define each mangle(lst_each_, using)
-
-#define foldl mangle(lst, _foldl)
-#define foldr mangle(lst, _foldr)
-
-#define map mangle(lst, _map)
-
-#define any mangle(lst, _any)
-#define keep mangle(lst, _keep)
-#define filter mangle(lst, _filter)
-
-#define predicate mangle(predicate_, using)
-typedef u8 (*predicate)(using);
-
-#define compare mangle(compare_, using)
-typedef u8 (*compare)(using, using);
-
-#define endo mangle(endo_, using)
-typedef using (*endo)(using);
-
-#define operator mangle(operator_, using)
-typedef using (*operator)(using, using);
+#define remove mangle(list, _remove)
+#define remove_take mangle(list, _remove_take)
