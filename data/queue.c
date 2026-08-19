@@ -39,9 +39,13 @@ u8 reserve(queue* self, usize n)
 
 u8 copy(queue* dst, queue* src)
 {
-    if (!reserve(dst, src->size)) return 0;
+    if (!reserve(dst, src->capacity)) return 0; // TODO: reserve only src->size.
 
-    memcpy(dst->data, src->data, src->size * sizeof (using));
+    memcpy(dst->data, src->data, src->capacity * sizeof (using));
+
+    dst->size = src->size;
+    dst->head = src->head;
+    dst->tail = src->tail;
 
     return 1;
 }
