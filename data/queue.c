@@ -5,6 +5,18 @@
 
 #define queue mangle(queue_, using)
 
+#define reserve mangle(queue, _reserve)
+
+#define copy mangle(copy_, queue)
+#define drop mangle(drop_, queue)
+
+#define wraps mangle(queue, _wraps)
+
+#define reorder mangle(queue, _reorder)
+
+#define enqueue mangle(queue, _enqueue)
+#define dequeue mangle(queue, _dequeue)
+
 typedef struct {
     using* data;
     usize  size;
@@ -25,23 +37,45 @@ u8 reserve(queue* self, usize n)
     return 1;
 }
 
-u8 reorder(self)
+u8 copy(queue* dst, queue* src)
 {
-    if (self->head == 0 && self->tail == 0) return 1;
+    if (!reserve(dst, src->size)) return 0;
 
-    using* tail = malloc(self->tail * sizeof (using));
+    memcpy(dst->data, src->data, src->size * sizeof (using));
+
+    return 1;
+}
+
+u8 drop(queue* this)
+{
+    free(this->data);
+
+    *this = (queue) { 0 };
+
+    return 1;
+}
+
+u8 wraps(queue* this) { return this->size && this->tail <= this->head; }
+
+u8 reorder(queue* self)
+{
+    if (!wraps(self)) return 1;
+
+    usize left_size = self->tail * sizeof (using);
+
+    using* left = malloc(left_size);
 
     if (left == NULL) return 0;
 
-    memmove(tail, self->data, self->tail * sizeof (using));
+    memmove(left, self->data, left_size);
 
-    usize head_delta = (self->size - self->head);
+    usize delta = self->size - self->head;
 
-    memmove(self->data, self->data + self->head, head_delta * sizeof (using));
+    memmove(self->data, self->data + self->head, delta * sizeof (using));
 
-    memmove(self->data + head_delta, tail, self->tail * sizeof (using));
+    memmove(self->data + delta, left, left_size);
 
-    free(tail);
+    free(left);
 
     self->head = 0;
     self->tail = self->size;
@@ -52,7 +86,7 @@ u8 reorder(self)
 u8 enqueue(queue* self, using element)
 {
     if (self->size == self->capacity) {
-        if (!reorder(self) && !reserve(self, self->capacity))
+        if (!reserve(self, self->capacity) || !reorder(self))
             return 0;
     }
 
@@ -75,3 +109,20 @@ u8 dequeue(queue* self, using* element)
 
     return 1;
 }
+
+#undef dequeue
+#undef enqueue
+
+#undef reorder
+
+#undef wraps
+
+#undef drop
+#undef copy
+
+#undef reserve
+
+#undef queue
+
+#undef mangle
+#undef cat
