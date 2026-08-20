@@ -58,16 +58,16 @@ view takel(view* self, predicate fn)
 {
     usize taken = 0;
 
-    while (self->size && fn(self->data[taken]))
+    while (self->size && fn(*self->data)) {
         taken += 1;
+        self->data += 1;
+        self->size -= 1;
+    }
 
-    view left = (view) { .data = NULL, .size = taken };
+    view left = { .data = NULL, .size = taken };
 
     if (taken)
-        left.data = self->data;
-
-    self->data += taken;
-    self->size -= taken;
+        left.data = self->data - taken;
 
     return left;
 }
@@ -76,15 +76,15 @@ view taker(view* self, predicate fn)
 {
     usize taken = 0;
 
-    while (self->size && fn(self->data[self->size - taken - 1]))
+    while (self->size && fn(self->data[self->size - 1])) {
         taken += 1;
+        self->size -= 1;
+    }
 
-    view right = (view) { .data = NULL, .size = taken };
+    view right = { .data = NULL, .size = taken };
 
     if (taken)
-        right.data = self->data + self->size - taken;
-
-    self->size -= taken;
+        right.data = self->data + self->size;
 
     return right;
 }
